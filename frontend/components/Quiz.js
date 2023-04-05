@@ -36,7 +36,7 @@ function Quiz(props) {
                     className={answer_id === ans.answer_id ? 'answer selected' : 'answer'}
                     onClick={() => selectAnswer(ans.answer_id)}
                   >
-                    {question.answers[0].text}
+                    {ans.text}
                     <button>
                       {answer_id === ans.answer_id ? 'SELECTED' : 'Select'}
                     </button>
