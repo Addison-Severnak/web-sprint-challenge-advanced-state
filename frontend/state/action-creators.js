@@ -25,10 +25,14 @@ export function setQuiz(quiz) {
   return { type: types.SET_QUIZ_INTO_STATE, payload }
 }
 
-export function inputChange() { }
+export function inputChange({ name, value }) {
+  const payload = { name, value }
+  return { type: types.INPUT_CHANGE, payload }
+}
 
 export function resetForm() {
-  const payload = initial
+  const payload = initialFormState()
+  return { type: types.RESET_FORM, payload }
 }
 
 // ❗ Async action creators
@@ -67,8 +71,19 @@ export function postAnswer({ quiz_id, answer_id }) {
     // - Dispatch the fetching of the next quiz
   }
 }
-export function postQuiz() {
+export function postQuiz({ question_text, true_answer_text, false_answer_text }) {
   return function (dispatch) {
+    axios.post(
+      'http://localhost:9000/api/quiz/new',
+      { question_text, true_answer_text, false_answer_text }
+    )
+      .then(res => {
+        dispatch(setMessage(res.data.message))
+        dispatch(resetForm())
+      })
+      .catch(err => {
+        dispatch(setMessage(err.response.data.message))
+      })
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
