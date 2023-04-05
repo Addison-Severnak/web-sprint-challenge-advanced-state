@@ -28,25 +28,41 @@ function Quiz(props) {
           <>
             <h2>{question.question}</h2>
             {console.log(question)}
+            <div id='quizAnswers'>
+              {
+                question.answers.map(ans => (
+                  <div 
+                    key={ans.answer_id}
+                    className={answer_id === ans.answer_id ? 'answer selected' : 'answer'}
+                    onClick={() => selectAnswer(ans.answer_id)}
+                  >
+                    {question.answers[0].text}
+                    <button>
+                      {answer_id === ans.answer_id ? 'SELECTED' : 'Select'}
+                    </button>
+                  </div>
+                ))
+              }
+            </div>
 
-            <div id="quizAnswers">
+            {/* <div id="quizAnswers">
               <div className="answer selected">
-                
+                {question.answers[0].text}
                 <button>
                   SELECTED
                 </button>
               </div>
 
               <div className="answer">
-                An elephant
+                {question.answers[1].text}
                 <button>
                   Select
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <div>
-              <button id="submitAnswerBtn" onClick={onAnswer} disabled={answer_id}>
+              <button id="submitAnswerBtn" onClick={onAnswer} disabled={!answer_id}>
                 Submit answer
               </button>
             </div>
@@ -61,5 +77,6 @@ export default connect(st => ({
   quiz: st.quiz
 }), {
   fetchQuiz: actions.fetchQuiz,
-  postAnswer: actions.postAnswer
+  postAnswer: actions.postAnswer,
+  selectAnswer: actions.selectAnswer
 })(Quiz)
